@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page with Navbar</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Page content styling */
+        .content {
+            padding: 20px;
+        }
+
+        .hero {
+            background: #f4f4f4;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+        }
+
+        /* Form styling */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-container textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Log out button styling */
+        .logout-btn {
+            float: right;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: darkred;
+        }
+
+        /* New styles for displaying content dynamically */
+        .display-section {
+            margin-top: 30px;
+        }
+
+        .display-section h2 {
+            font-size: 1.8em;
+        }
+
+        .display-section p {
+            font-size: 1.2em;
+        }
+
+        .project-info {
+            margin-top: 20px;
+        }
+
+        /* Image display styling */
+        .image-gallery {
+            margin-top: 15px;
+        }
+
+        .image-gallery img {
+            margin-right: 10px;
+            margin-bottom: 10px;
+            max-width: 150px;
+            max-height: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="#home">
+            <img src="tracker logo.png" alt="Logo of SK Budget Tracker" height="40px" width="40px">
+        </a>
+        <a href="#about">Add Project</a>
+        <a href="#services">Contents</a>
+        <a href="#contact">Summary</a>
+
+        <!-- Log Out Button -->
+        <button class="logout-btn" onclick="window.location.href='index1.html';">Log Out</button>
+    </div>
+
+    <!-- Page content -->
+    <div class="content">
+        <div class="hero">
+            <h1>Welcome to Barangay Kalusugan SK Budget Tracker</h1>
+            <p>Transparency is Key to Gain Taxpayers Trust</p>
+        </div>
+
+        <!-- Add Project Section -->
+        <div id="about">
+            <h2>Add Project</h2>
+
+            <div class="form-container">
+                <form id="addProjectForm">
+                    <!-- Date Input -->
+                    <label for="projectDate">Project Date</label>
+                    <input type="date" id="projectDate" name="projectDate" required>
+
+                    <!-- Title Input -->
+                    <label for="projectTitle">Project Title</label>
+                    <input type="text" id="projectTitle" name="projectTitle" placeholder="Enter project title" required>
+
+                    <!-- Total Expenses Input -->
+                    <label for="totalExpenses">Total Expenses</label>
+                    <input type="number" id="totalExpenses" name="totalExpenses" placeholder="Enter total expenses" required>
+
+                    <!-- Project Details Input -->
+                    <label for="projectDetails">Project Details</label>
+                    <textarea id="projectDetails" name="projectDetails" placeholder="Enter project details" required></textarea>
+
+                    <!-- Image Upload Input (Multiple images) -->
+                    <label for="projectImage">Project Images (Multiple)</label>
+                    <input type="file" id="projectImage" name="projectImage" accept="image/*" multiple required>
+
+                    <!-- Submit Button -->
+                    <button type="submit">Submit Project</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contents Section where project data will appear -->
+        <div id="services" class="display-section">
+            <h2>Contents</h2>
+            <div id="contentProjectInfo"></div>
+        </div>
+
+        <!-- Summary Section where project data will appear -->
+        <div id="contact" class="display-section">
+            <h2>Summary</h2>
+            <div id="summaryProjectInfo"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Your Website. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Handle form submission
+        document.getElementById("addProjectForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form from submitting normally
+
+            // Gather form data
+            const projectDate = document.getElementById("projectDate").value;
+            const projectTitle = document.getElementById("projectTitle").value;
+            const totalExpenses = document.getElementById("totalExpenses").value;
+            const projectDetails = document.getElementById("projectDetails").value;
+            const projectImages = document.getElementById("projectImage").files;
+
+            // Prepare data for display
+            let imagesHTML = '';
+            for (let i = 0; i < projectImages.length; i++) {
+                const imageURL = URL.createObjectURL(projectImages[i]);
+                imagesHTML += `<img src="${imageURL}" alt="Project Image" />`;
+            }
+
+            const projectInfoHTML = `
+                <div class="project-info">
+                    <strong>Title:</strong> ${projectTitle}<br>
+                    <strong>Date:</strong> ${projectDate}<br>
+                    <strong>Total Expenses:</strong> ${totalExpenses}<br>
+                    <strong>Details:</strong> ${projectDetails}<br>
+                    <strong>Images:</strong><br>
+                    <div class="image-gallery">${imagesHTML}</div>
+                </div>
+            `;
+
+            // Update Contents Section
+            document.getElementById("contentProjectInfo").innerHTML = projectInfoHTML;
+
+            // Update Summary Section
+            document.getElementById("summaryProjectInfo").innerHTML = `
+                <div class="project-info">
+                    <strong>Title:</strong> ${projectTitle}<br>
+                    <strong>Date:</strong> ${projectDate}<br>
+                    <strong>Total Expenses:</strong> ${totalExpenses}<br>
+                    <strong>Details:</strong> ${projectDetails}
+                </div>
+            `;
+
+            // Optionally, you can display a confirmation message
+            alert("Project has been submitted!");
+        });
+    </script>
+
+</body>
+</html>
