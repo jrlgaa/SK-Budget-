@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Project with Documentation Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .navbar {
+            background-color: #333;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: #000;
+        }
+
+        .logout-btn {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: auto;
+        }
+
+        .logout-btn:hover {
+            background-color: darkred;
+        }
+
+        .content {
+            margin-top: 80px;
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .project-form-container {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .project-form-container h3 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #0056b3;
+        }
+
+        .project-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-form label {
+            font-size: 18px;
+            margin: 8px 0;
+        }
+
+        .project-form input,
+        .project-form textarea {
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        .project-form button {
+            background-color: #0056b3;
+            color: white;
+            padding: 12px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .project-form button:hover {
+            background-color: #003d80;
+        }
+
+        .reset-btn {
+            background-color: red;
+            color: white;
+            padding: 12px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .reset-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .image-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-row img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .image-row button {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .image-row button:hover {
+            background-color: darkred;
+        }
+
+        #dashboard {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 70%;
+            height: 100%;
+            background-color: #333;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            color: white;
+        }
+
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .chart-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+        }
+
+        .return-btn {
+            display: block;
+            margin: 30px auto 10px;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .return-btn:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="#" id="logo-link">
+            <img src="tracker logo.png" alt="Logo of SK Budget Tracker" height="40px" width="40px">
+        </a>
+        <a href="adminpage.html">Home</a>
+        <a href="plans.html">Add Plans</a>
+        <a href="projectplan.html">Project Plans</a>
+        <a href="list.html">Add Project</a>
+        <a href="documentation.html">Project Documentation</a>
+        <a href="citizenpage.html">Summary of Projects</a>
+        <button class="logout-btn" onclick="window.location.href='loginpage.html';">Log Out</button>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h1>Add Project</h1>
+        </div>
+
+        <div class="project-form-container">
+            <h3>Add a New Project</h3>
+            <form id="projectForm" class="project-form">
+                <label for="title">Project Title</label>
+                <input type="text" id="title" name="title" required>
+
+                <label for="date">Project Date</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="budget">Total Budget</label>
+                <input type="number" id="budget" name="budget" required>
+
+                <label for="spent">Amount Spent</label>
+                <input type="number" id="spent" name="spent" required>
+
+                <label for="details">Project Details</label>
+                <textarea id="details" name="details" rows="4" required></textarea>
+
+                <label for="images">Documentation Images</label>
+                <input type="file" id="images" name="documentation[]" accept="image/*" multiple>
+
+                <button type="submit">Add Project</button>
+            </form>
+            <button class="reset-btn" onclick="resetData()">Reset All Data</button>
+        </div>
+    </div>
+
+    <div id="dashboard">
+        <div class="dashboard-header">
+            <h2>Dashboard Overview</h2>
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-box">
+                <canvas id="budgetPieChart"></canvas>
+            </div>
+
+            <div class="chart-box">
+                <canvas id="quarterBarChart"></canvas>
+            </div>
+        </div>
+
+        <button class="return-btn" onclick="toggleDashboard()">Return to Home</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.getElementById('projectForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var title = document.getElementById('title').value;
+            var date = document.getElementById('date').value;
+            var budget = document.getElementById('budget').value;
+            var spent = document.getElementById('spent').value;
+            var details = document.getElementById('details').value;
+
+            var images = [];
+            var imageInput = document.getElementById('images');
+            if (imageInput.files.length > 0) {
+                Array.from(imageInput.files).forEach(function(file) {
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                        images.push(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            setTimeout(function() {
+                var newProject = {
+                    title: title,
+                    date: date,
+                    budget: budget,
+                    spent: spent,
+                    details: details,
+                    images: images
+                };
+
+                var projects = JSON.parse(localStorage.getItem('projects')) || [];
+                projects.push(newProject);
+                localStorage.setItem('projects', JSON.stringify(projects));
+
+                document.getElementById('projectForm').reset();
+            }, 500);
+        });
+
+        const dashboard = document.getElementById('dashboard');
+        document.getElementById('logo-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            dashboard.style.display = dashboard.style.display === 'block' ? 'none' : 'block';
+            if (dashboard.style.display === 'block') renderCharts();
+        });
+
+        function toggleDashboard() {
+            dashboard.style.display = 'none';
+        }
+
+        let pieChartInstance;
+        let barChartInstance;
+
+        function renderCharts() {
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            let totalBudget = 0;
+            let totalSpent = 0;
+            const quarterly = {
+                Q1: { budget: 0, spent: 0 },
+                Q2: { budget: 0, spent: 0 },
+                Q3: { budget: 0, spent: 0 },
+                Q4: { budget: 0, spent: 0 }
+            };
+
+            projects.forEach(p => {
+                const budget = parseFloat(p.budget) || 0;
+                const spent = parseFloat(p.spent) || 0;
+                const month = new Date(p.date).getMonth();
+                totalBudget += budget;
+                totalSpent += spent;
+                if (month <= 2) quarterly.Q1.budget += budget, quarterly.Q1.spent += spent;
+                else if (month <= 5) quarterly.Q2.budget += budget, quarterly.Q2.spent += spent;
+                else if (month <= 8) quarterly.Q3.budget += budget, quarterly.Q3.spent += spent;
+                else quarterly.Q4.budget += budget, quarterly.Q4.spent += spent;
+            });
+
+            if (pieChartInstance) pieChartInstance.destroy();
+            if (barChartInstance) barChartInstance.destroy();
+
+            const pieCtx = document.getElementById('budgetPieChart').getContext('2d');
+            pieChartInstance = new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Used Budget', 'Remaining Budget'],
+                    datasets: [{
+                        data: [totalSpent, totalBudget - totalSpent],
+                        backgroundColor: ['#ff6384', '#36a2eb'],
+                        borderColor: ['#fff', '#fff'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Budget Usage Overview' },
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            const barCtx = document.getElementById('quarterBarChart').getContext('2d');
+            barChartInstance = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                    datasets: [
+                        {
+                            label: 'Budget per Quarter',
+                            data: [quarterly.Q1.budget, quarterly.Q2.budget, quarterly.Q3.budget, quarterly.Q4.budget],
+                            backgroundColor: '#36a2eb',
+                            borderColor: '#333',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Spent per Quarter',
+                            data: [quarterly.Q1.spent, quarterly.Q2.spent, quarterly.Q3.spent, quarterly.Q4.spent],
+                            backgroundColor: '#ff6384',
+                            borderColor: '#333',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Budget Spent per Quarter' },
+                        legend: { position: 'top' }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

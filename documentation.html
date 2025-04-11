@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .navbar {
+            background-color: #333;
+            padding: 15px 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        .logout-btn {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            background-color: #333;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: auto;
+        }
+
+        .logout-btn:hover {
+            background-color: #575757;
+        }
+
+        .content {
+            margin-top: 80px; 
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .project-overview-container {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .folder-card {
+            display: flex;
+            flex-direction: column;
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .folder-card:hover {
+            background-color: #e2e2e2;
+        }
+
+        .folder-card h4 {
+            margin: 10px 0;
+            color: #0056b3;
+            font-size: 20px;
+        }
+
+        .folder-card p {
+            font-size: 14px;
+            color: #555;
+            margin: 0;
+        }
+
+        .folder-card .folder-title {
+            font-weight: bold;
+        }
+
+        .folder-card .folder-date {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .folder-content {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .folder-content img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .project-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .project-budget, .project-spent, .project-remaining {
+            font-size: 14px;
+            color: #555;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="#">
+            <img src="tracker logo.png" alt="Logo of SK Budget Tracker" height="40px" width="40px">
+        </a>
+        <a href="adminpage.html">Home</a>
+        <a href="plans.html">Plans</a>
+        <a href="projectplan.html">Projects</a>
+        <a href="list.html">Add Project</a>
+        <a href="documentation.html">Project Documentation</a>
+        <a href="citizenpage.html">Summary Of Projects</a>
+        <button class="logout-btn" onclick="window.location.href='loginpage.html';">Log Out</button>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h1>Project Documentation</h1>
+        </div>
+
+        <div class="project-overview-container" id="projectOverviewContainer">
+            <h3>Projects Overview</h3>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            var projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+            projects.sort(function(a, b) {
+                return new Date(b.date) - new Date(a.date);
+            });
+
+            if (projects.length > 0) {
+                var container = document.getElementById('projectOverviewContainer');
+
+                projects.forEach(function(project, index) {
+                    var card = document.createElement('div');
+                    card.className = 'folder-card';
+
+                    var cardTitle = document.createElement('h4');
+                    cardTitle.className = 'folder-title';
+                    cardTitle.textContent = project.title;
+
+                    var cardDate = document.createElement('p');
+                    cardDate.className = 'folder-date';
+                    cardDate.textContent = "Date: " + project.date;
+
+                    var cardDetails = document.createElement('p');
+                    cardDetails.textContent = "Details: " + project.details;
+
+                    var projectDetailsDiv = document.createElement('div');
+                    projectDetailsDiv.className = 'project-details';
+
+                    var projectBudget = document.createElement('div');
+                    projectBudget.className = 'project-budget';
+                    projectBudget.textContent = "Total Budget: $" + project.budget;
+
+                    var projectSpent = document.createElement('div');
+                    projectSpent.className = 'project-spent';
+                    projectSpent.textContent = "Spent: $" + project.spent;
+
+                    var projectRemaining = document.createElement('div');
+                    projectRemaining.className = 'project-remaining';
+                    var remaining = project.budget - project.spent;
+                    projectRemaining.textContent = "Remaining: $" + remaining;
+
+                    projectDetailsDiv.appendChild(projectBudget);
+                    projectDetailsDiv.appendChild(projectSpent);
+                    projectDetailsDiv.appendChild(projectRemaining);
+
+                    var cardContent = document.createElement('div');
+                    cardContent.className = 'folder-content';
+
+                    if (project.images && project.images.length > 0) {
+                        project.images.forEach(function(imageSrc) {
+                            var imgElement = document.createElement('img');
+                            imgElement.src = imageSrc;
+                            imgElement.alt = "Project Image";
+                            cardContent.appendChild(imgElement);
+                        });
+                    }
+
+                    card.appendChild(cardTitle);
+                    card.appendChild(cardDate);
+                    card.appendChild(cardDetails);
+                    card.appendChild(projectDetailsDiv);
+                    card.appendChild(cardContent);
+
+                    card.onclick = function() {
+                        var content = this.querySelector('.folder-content');
+                        content.style.display = (content.style.display === 'none' || content.style.display === '') ? 'block' : 'none';
+                    };
+
+                    container.appendChild(card);
+                });
+            } else {
+                var noProjectMessage = document.createElement('p');
+                noProjectMessage.textContent = "No projects found.";
+                document.getElementById('projectOverviewContainer').appendChild(noProjectMessage);
+            }
+        };
+    </script>
+
+</body>
+</html>

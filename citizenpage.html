@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary of Projects</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 0px;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        .navbar {
+            background-color: #333;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .logout-btn {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: auto;
+        }
+
+        .logout-btn:hover {
+            background-color: darkred;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 28px;
+            margin-top: 30px;
+            color: white;
+            background-color: #000;
+        }
+
+        .projects-container, .plans-container {
+            margin-top: 20px;
+            display: grid;  
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .project-card, .plan-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;  
+        }
+
+        .project-card img, .plan-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .project-card h3, .plan-card h3 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .project-card p, .plan-card p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .project-card .details, .plan-card .details {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-container button:hover {
+            background-color: #45a049;
+        }
+
+      
+        .total-expenses {
+            text-align: center;
+            font-size: 18px;  
+            color: #333;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="#" id="logo-link">
+            <img src="tracker logo.png" alt="Logo of SK Budget Tracker" height="40px" width="40px">
+        </a>
+        <a href="adminpage.html">Home</a>
+        <a href="plans.html">Add Plans</a>
+        <a href="projectplan.html">Project Plans</a>
+        <a href="list.html">Add Project</a>
+        <a href="documentation.html">Project Documentation</a>
+        <a href="citizenpage.html">Summary of Projects</a>
+
+        <button class="logout-btn" onclick="window.location.href='loginpage.html';">Log Out</button>
+    </div>
+
+    <div class="section-title"><H2>Projects</H2></div>
+    <div class="projects-container" id="projectsContainer">
+    </div>
+    <div class="total-expenses" id="totalProjectExpenses">
+    </div>
+
+    <div class="section-title"><H2>Plans</H2></div>
+    <div class="plans-container" id="plansContainer">
+    </div>
+    <div class="total-expenses" id="totalPlanExpenses">
+    </div>
+
+    <script>
+        function displayContent() {
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            const plans = JSON.parse(localStorage.getItem('plans')) || [];
+
+            const projectContainer = document.getElementById('projectsContainer');
+            const planContainer = document.getElementById('plansContainer');
+            const projectTotalDiv = document.getElementById('totalProjectExpenses');
+            const planTotalDiv = document.getElementById('totalPlanExpenses');
+
+            projectContainer.innerHTML = '';
+            planContainer.innerHTML = '';
+            projectTotalDiv.innerHTML = '';
+            planTotalDiv.innerHTML = '';
+
+            let totalProjectExpenses = 0;
+            let totalPlanExpenses = 0;
+
+            projects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.classList.add('project-card');
+
+                projectCard.innerHTML = `
+                    <img src="${project.images || 'default.jpg'}" alt="Project Image">
+                    <h3>${project.title}</h3>
+                    <p><strong>Date:</strong> ${project.date}</p>
+                    <p><strong>Expenses:</strong> ₱${project.spent}</p>
+                    <p class="details"><strong>Details:</strong> ${project.details}</p>
+                `;
+
+                projectContainer.appendChild(projectCard);
+
+                totalProjectExpenses += parseFloat(project.spent) || 0;
+            });
+
+            projectTotalDiv.innerHTML = `<h2>Total Project Expenses: ₱${totalProjectExpenses.toFixed(2)}</h2>`;
+
+            plans.forEach(plan => {
+                const planCard = document.createElement('div');
+                planCard.classList.add('plan-card');
+
+                planCard.innerHTML = `
+                    <img src="${plan.image || 'default.jpg'}" alt="Plan Image">
+                    <h3>${plan.title}</h3>
+                    <p><strong>Date:</strong> ${plan.date}</p>
+                    <p class="details"><strong>Details:</strong> ${plan.details}</p>
+                    <p><strong>Expenses:</strong> ₱${plan.expenses}</p>
+                `;
+
+                planContainer.appendChild(planCard);
+
+                totalPlanExpenses += parseFloat(plan.expenses) || 0;
+            });
+
+            planTotalDiv.innerHTML = `<h2>Total Plan Expenses: ₱${totalPlanExpenses.toFixed(2)}</h2>`;
+        }
+
+        window.onload = displayContent;
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+
+    .left-section {
+      width: 50%;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .left-section img {
+      max-width: 350px; 
+      margin-bottom: 20px;
+    }
+
+    .left-section h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .left-section p {
+      font-size: 18px;
+    }
+
+    .blue-text {
+      font-size: 20px;
+      color: #007bff;
+      margin-top: 10px;
+    }
+
+    .form-container {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 400px;
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .link-container {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .link-container a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    .link-container a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="left-section">
+    <img src="mylogo.png" alt="Logo">
+    <h1>Login to Your Account</h1>
+    <p class="blue-text">Login as Admin or Citizen</p>
+  </div>
+
+  <div class="form-container">
+    <div class="form-box">
+      <h2>Admin Login</h2>
+      <form id="adminLoginForm">
+        <div class="input-group">
+          <label for="adminUsername">Username</label>
+          <input type="text" id="adminUsername" name="username" required>
+        </div>
+        <div class="input-group">
+          <label for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" name="password" required>
+        </div>
+        <button type="submit">Login as Admin</button>
+      </form>
+      <div class="link-container">
+        <p><a href="forgotpasswordpage.html?role=admin">Forgot Password?</a></p>
+        <p><a href="signupadmin.html">Sign Up as Admin</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <div class="form-box">
+      <h2>Citizen Login</h2>
+      <form id="citizenLoginForm">
+        <div class="input-group">
+          <label for="citizenUsername">Username</label>
+          <input type="text" id="citizenUsername" name="username" required>
+        </div>
+        <div class="input-group">
+          <label for="citizenPassword">Password</label>
+          <input type="password" id="citizenPassword" name="password" required>
+        </div>
+        <button type="submit">Login as Citizen</button>
+      </form>
+      <div class="link-container">
+        <p><a href="forgotpasswordpage.html?role=citizen">Forgot Password?</a></p>
+        <p><a href="signupadmin.html">Sign Up as Citizen</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Admin login function
+    document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const username = document.getElementById("adminUsername").value;
+      const password = document.getElementById("adminPassword").value;
+
+      const storedAdmin = JSON.parse(localStorage.getItem("admin"));
+
+      if (storedAdmin && storedAdmin.username === username && storedAdmin.password === password) {
+        window.location.href = "adminpage.html";
+      } else {
+        alert("Wrong Username or Password for Admin!");
+      }
+    });
+
+    // Citizen login function
+    document.getElementById("citizenLoginForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const username = document.getElementById("citizenUsername").value;
+      const password = document.getElementById("citizenPassword").value;
+
+      const storedCitizen = JSON.parse(localStorage.getItem("citizen"));
+
+      if (storedCitizen && storedCitizen.username === username && storedCitizen.password === password) {
+        window.location.href = "citizenMain.html"; 
+      } else {
+        alert("Wrong Username or Password for Citizen!");
+      }
+    });
+  </script>
+</body>
+
+</html>
